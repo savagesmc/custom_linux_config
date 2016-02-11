@@ -6,8 +6,10 @@
 	smtpserverport = 25
 	suppresscc = self
 [diff]
-	tool = kdiff3
+	tool = vimdiff
 [difftool]
-	prompt = fasle
+	prompt = false
 [merge]
-	tool = kdiff3
+	tool = vimdiff
+[credential]
+	helper = store --file ~/.git/.credentials
