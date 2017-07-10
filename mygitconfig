@@ -1,7 +1,7 @@
 [user]
 	name = Clark, Steve
 	email = steve@clarkhome.org
-[senemail]
+[sendemail]
 	smtpserver = smtp.gmail.com
 	smtpserverport = 25
 	suppresscc = self
