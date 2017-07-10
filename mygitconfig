@@ -1,0 +1,13 @@
+[user]
+	name = Clark, Steve
+	email = steve@clarkhome.org
+[senemail]
+	smtpserver = smtp.gmail.com
+	smtpserverport = 25
+	suppresscc = self
+[diff]
+	tool = kdiff3
+[difftool]
+	prompt = fasle
+[merge]
+	tool = kdiff3
