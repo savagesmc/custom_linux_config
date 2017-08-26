@@ -2,4 +2,13 @@ alias vm=mv
 alias sl=ls
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/lib
-alias xsh='DISPLAY=:0.0 ssh -YC -c aes128-gcm@openssh.com'
+alias sshx='DISPLAY=:0.0 ssh -YC -c aes128-gcm@openssh.com'
+
+DOCKER_DIR="/mnt/c/Program Files/docker/Docker/resources/bin"
+DOCKER="${DOCKER_DIR}"/docker.exe
+if [[ -e "${DOCKER}" ]]; then
+	export PATH=$PATH:$DOCKER_DIR
+	alias docker=docker.exe
+fi
+
+export PATH=$PATH:/mnt/c/Windows/System32
