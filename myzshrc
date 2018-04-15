@@ -6,26 +6,18 @@ alias di='docker images | grep -v "^<none>"'
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/lib
 alias sshx='DISPLAY=:0.0 ssh -YC -c aes128-gcm@openssh.com'
 
-alias pyw=/mnt/c/Python35/python.exe
-
-alias vim=nvim
-alias vi=nvim
+if [[ -e /usr/bin/nvim ]]; then
+  alias vim=nvim
+  alias vi=nvim
+fi
 
 if [ -z "$SSH_AUTH_SOCK" ] ; then
   eval `ssh-agent -s`
   ssh-add
 fi
 
-DOCKER_DIR="/mnt/c/Program Files/docker/Docker/resources/bin"
-DOCKER="${DOCKER_DIR}"/docker.exe
-if [[ -e "${DOCKER}" ]]; then
-	export PATH=$PATH:$DOCKER_DIR
-	alias docker=docker.exe
+if [[ -d /usr/local/cuda ]]; then
+  export PATH=/usr/local/cuda/bin:$PATH
+  export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 fi
 
-export PATH=$PATH:/mnt/c/Windows/System32:/mnt/c/Program\ Files/fmedia
-export PATH=$PATH:/mnt/c/Windows/System32:/mnt/c/Program\ Files\ \(x86\)/VideoLAN/VLC
-export PULSE_SERVER=tcp:localhost
-
-export DISPLAY=localhost:0
-export DOCKER_HOST='tcp://0.0.0.0:2375'
