@@ -21,3 +21,7 @@ if [[ -d /usr/local/cuda ]]; then
   export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 fi
 
+if [[ -d /opt/conda ]]; then
+  export PATH=/opt/conda/bin:$PATH
+  export LD_LIBRARY_PATH=/opt/conda/lib:/opt/conda/lib64:$LD_LIBRARY_PATH
+fi

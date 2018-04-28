@@ -28,6 +28,7 @@ echo "groupadd -g ${GID} ${GROUP}" >> $ADDUSER_SCRIPT
 echo "useradd -M -s /usr/bin/zsh -g ${GID} -u ${UID} ${USER}" >> $ADDUSER_SCRIPT
 echo "echo ${USER}:${PASSWORD} | chpasswd" >> $ADDUSER_SCRIPT
 echo "usermod -aG sudo ${USER}" >> $ADDUSER_SCRIPT
+echo "echo created user ${USER}" >> $ADDUSER_SCRIPT
 chmod a+x $ADDUSER_SCRIPT
 }
 
@@ -63,7 +64,7 @@ docker run $NVIDIA -d --rm --privileged \
 
 # Create user account for $USER
 create_adduser_script
-docker exec -d $TAG $ADDUSER_SCRIPT
+docker exec -d $TAG /bin/bash -c $ADDUSER_SCRIPT
 rm $ADDUSER_SCRIPT
 
 IPADDR=`docker inspect $TAG | grep \"IPAddress\": | cut -d":" -f 2 | sed 's/\"//g' | sed 's/,//g' | uniq`
