@@ -11,6 +11,10 @@ if [[ -e /usr/bin/nvim ]]; then
   alias vi=nvim
 fi
 
+if [[ -e /usr/bin/lynx && -e .lynx.lss ]]; then
+  alias lynx='lynx -lss ~/.lynx.lss
+fi
+
 if [ -z "$SSH_AUTH_SOCK" ] ; then
   eval `ssh-agent -s`
   ssh-add
