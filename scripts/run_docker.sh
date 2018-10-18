@@ -4,6 +4,19 @@ USER=`stat -c %U ${HOME}`
 GROUP=`stat -c %G ${HOME}`
 GID=`stat -c %g ${HOME}`
 
+IS_WSL=`cat /proc/version | grep Microsoft`
+
+if [[ ! -z $IS_WSL ]]; then
+   HOME_=$(wslpath ${HOME} | cut -d"\\" -f1-3)
+   HOME_WSL=$(wslpath -u ${HOME_})
+   ADDUSER_SCRIPT=${HOME_WSL}/create_user_docker.sh
+else
+   HOME_=${HOME}
+   ADDUSER_SCRIPT=${HOME}/create_user_docker.sh
+fi
+
+echo HOME_ ${HOME_}
+
 usage()
 {
 cat << EOF
@@ -17,7 +30,6 @@ cat << EOF
 EOF
 }
 
-ADDUSER_SCRIPT=${HOME}/create_user_docker.sh
 
 PASSWORD=${USER}
 
@@ -30,12 +42,13 @@ echo "echo ${USER}:${PASSWORD} | chpasswd" >> $ADDUSER_SCRIPT
 echo "usermod -aG sudo ${USER}" >> $ADDUSER_SCRIPT
 echo "echo created user ${USER}" >> $ADDUSER_SCRIPT
 chmod a+x $ADDUSER_SCRIPT
+echo "adduser script $ADDUSER_SCRIPT created"
 }
-
 
 NVIDIA=""
 
 TAG=$USER
+INTERACTIVE=""
 
 while getopts "hi:t:NI" arg; do
    case $arg in
@@ -48,6 +61,9 @@ while getopts "hi:t:NI" arg; do
       t)
          TAG=$OPTARG
          ;;
+      I)
+         INTERACTIVE="-it"
+         ;;
       *)
          usage
          exit 1
@@ -56,8 +72,8 @@ while getopts "hi:t:NI" arg; do
 done
 shift $((OPTIND-1))
 
-docker run $NVIDIA -d --rm --privileged \
-   -v $HOME:$HOME \
+docker run $NVIDIA $INTERACTIVE -d --rm --privileged \
+   -v ${HOME_}:${HOME} \
    --name $TAG \
    $IMAGE \
    $OPTARG
@@ -65,7 +81,7 @@ docker run $NVIDIA -d --rm --privileged \
 # Create user account for $USER
 create_adduser_script
 docker exec -d $TAG /bin/bash -c $ADDUSER_SCRIPT
-rm $ADDUSER_SCRIPT
+#rm $ADDUSER_SCRIPT
 
 IPADDR=`docker inspect $TAG | grep \"IPAddress\": | cut -d":" -f 2 | sed 's/\"//g' | sed 's/,//g' | uniq`
 

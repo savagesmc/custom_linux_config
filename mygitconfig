@@ -15,3 +15,5 @@
 	tool = vimdiff
 [credential]
 	helper = store --file ~/.git/.credentials
+[oh-my-zsh]
+	hide-status = 1

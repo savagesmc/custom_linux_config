@@ -1,7 +1,7 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-files=(myvimrc_vundle_plugins myvimrc mygitconfig myzshrc mytmux.conf lynx.lss)
+files=(dircolors myvimrc_vundle_plugins myvimrc mygitconfig myzshrc mytmux.conf lynx.lss)
 
 if [[ -d ${DIR}/scripts ]]; then
    scripts=$(find ${DIR}/scripts -type f)
