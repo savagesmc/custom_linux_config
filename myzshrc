@@ -3,16 +3,20 @@ alias sl=ls
 
 alias di='docker images | grep -v "^<none>"'
 
+if [[ -z $DISPLAY ]]; then
+   export DISPLAY=localhost:0.0
+fi
+
 [ -e ~/.dircolors ] && eval $(dircolors -b ~/.dircolors) || eval $(dircolors -b)
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/lib
-alias sshx='DISPLAY=:0.0 ssh -YC -c aes128-gcm@openssh.com'
+alias sshx='DISPLAY=:0.0 ssh -Y '
 
 if [[ `uname -a | grep Microsoft` ]]; then
   export DOCKER_HOST='tcp://0.0.0.0:2375'
 fi
 
-ZSH_THEME=cypher
+ZSH_THEME=candy
 
 if [[ -e /usr/bin/nvim ]]; then
   alias vim=nvim
@@ -21,6 +25,11 @@ fi
 
 if [[ -e /usr/bin/lynx && -e .lynx.lss ]]; then
   alias lynx='lynx -lss ~/.lynx.lss'
+fi
+
+if [[ -d /c/Program\ Files\ \(x86\)/VideoLAN/VLC ]]; then
+  export PATH=$PATH:/c/Program\ Files\ \(x86\)/VideoLAN/VLC
+  alias vlc="vlc.exe"
 fi
 
 if [ -z "$SSH_AUTH_SOCK" ] ; then

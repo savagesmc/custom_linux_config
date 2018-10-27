@@ -9,10 +9,12 @@ IS_WSL=`cat /proc/version | grep Microsoft`
 if [[ ! -z $IS_WSL ]]; then
    HOME_=$(wslpath ${HOME} | cut -d"\\" -f1-3)
    HOME_WSL=$(wslpath -u ${HOME_})
-   ADDUSER_SCRIPT=${HOME_WSL}/create_user_docker.sh
+   ADDUSER_SCRIPT=${HOME}/home/create_user_docker.sh
+   RUN_ADDUSER=${HOME}/create_user_docker.sh
 else
    HOME_=${HOME}
    ADDUSER_SCRIPT=${HOME}/create_user_docker.sh
+   RUN_ADDUSER=${ADDUSER_SCRIPT}
 fi
 
 echo HOME_ ${HOME_}
@@ -80,7 +82,7 @@ docker run $NVIDIA $INTERACTIVE -d --rm --privileged \
 
 # Create user account for $USER
 create_adduser_script
-docker exec -d $TAG /bin/bash -c $ADDUSER_SCRIPT
+docker exec $TAG /bin/bash -c $RUN_ADDUSER
 #rm $ADDUSER_SCRIPT
 
 IPADDR=`docker inspect $TAG | grep \"IPAddress\": | cut -d":" -f 2 | sed 's/\"//g' | sed 's/,//g' | uniq`
