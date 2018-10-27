@@ -10,7 +10,7 @@ fi
 [ -e ~/.dircolors ] && eval $(dircolors -b ~/.dircolors) || eval $(dircolors -b)
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/lib
-alias sshx='DISPLAY=:0.0 ssh -Y '
+alias sshx='ssh -Y '
 
 if [[ `uname -a | grep Microsoft` ]]; then
   export DOCKER_HOST='tcp://0.0.0.0:2375'
