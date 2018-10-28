@@ -1,0 +1,8 @@
+#!/bin/bash
+
+IMAGES=`docker ps --all | cut -d" " -f 1 | grep -v CONTAINER`
+for IMAGE in ${IMAGES}
+do
+  docker kill ${IMAGE}
+  docker rm ${IMAGE}
+done

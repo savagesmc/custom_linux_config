@@ -1,0 +1,53 @@
+#!/bin/bash
+
+function show_help {
+cat << EOF
+dlvideo -h?vup -s srcURL -d dstFile
+   where:
+    -h/?      => this help
+    -v        => verbose
+    -u        => username
+    -p        => password (with username)
+EOF
+}
+
+# POSIX variable
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+
+# Initialize our own variables:
+verbose=0
+src=input.mp4
+dst=output.mp4
+
+while getopts "h?vu:p:s:d:" opt; do
+    case "$opt" in
+    h|\?)
+        show_help
+        exit 0
+        ;;
+    v)  verbose=1
+        ;;
+    u)  username=$OPTARG
+        ;;
+    p)  password=$OPTARG
+        ;;
+    s)  src=$OPTARG
+        ;;
+    d)  dst=$OPTARG
+        ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+[ "${1:-}" = "--" ] && shift
+
+echo "verbose=$verbose, username='$username', password='$password', Leftovers: $@"
+
+if [[ ! -z ${username} && ! -z ${password} ]]; then
+   login=${username}:${password}@
+else
+   login=""
+fi
+
+ffmpeg -y -rtsp_transport tcp -i rtsp://${login}${src}:554 -vcodec copy -acodec copy ${dst}
