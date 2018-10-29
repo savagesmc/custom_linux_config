@@ -1,5 +1,6 @@
 alias vm=mv
 alias sl=ls
+alias xhost="xhost;echo $DISPLAY"
 
 alias di='docker images | grep -v "^<none>"'
 
