@@ -55,7 +55,7 @@ INTERACTIVE=""
 while getopts "hi:t:NI" arg; do
    case $arg in
       N)
-         NVIDIA="--runtime=nvidia"
+         NVIDIA="--runtime=nvidia --shm-size=1g --ulimit memlock=-1 --ulimit stack=67108864"
          ;;
       i)
          IMAGE=$OPTARG
