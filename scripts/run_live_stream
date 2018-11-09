@@ -1,0 +1,28 @@
+#!/bin/bash
+
+ipaddr="localhost"
+user="admin"
+password="admin"
+
+options=$(getopt -o i:p:u: -- "$@")
+[ $? -eq 0 ] || {
+  echo "Incorrect options provided"
+  exit 1
+}
+eval set -- "$options"
+
+while true; do
+    case "$1" in
+    -i)  shift; ipaddr=$1 ;;
+    -u)  shift; user=$1 ;;
+    -p)  shift; password=$1 ;;
+    --) shift; break ;;
+    *) echo "Internal error"; exit 1 ;;
+    esac
+    shift
+done
+
+found=`ps ax | grep $ipaddr | grep -v grep`
+if [[ -z $found ]]; then
+  cvlc --fullscreen rtsp://$user:$password@$ipaddr &> output.log &
+fi
