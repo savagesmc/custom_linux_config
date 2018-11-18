@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LOGFILE=/tmp/livestream.log
+
 ipaddr="localhost"
 user="admin"
 password="admin"
@@ -22,7 +24,22 @@ while true; do
     shift
 done
 
-found=`ps ax | grep $ipaddr | grep -v grep`
+OPTIONS="-I rc --rc-host localhost:4212 --fullscreen rtsp://$user:$password@$ipaddr"
+DEST="rtsp://$user:$password@$ipaddr"
+
+found=`ps ax | grep $ipaddr | grep -v run_live_stream | grep -v grep`
 if [[ -z $found ]]; then
-  cvlc --fullscreen rtsp://$user:$password@$ipaddr &> output.log &
+  echo "========================================================================" >> $LOGFILE
+  echo "running live stream at " `date` >> $LOGFILE
+  DISPLAY=:0 vlc ${OPTIONS} ${DEST} &>> $LOGFILE &
+else
+  percent_cpu=`ps -eo cmd,%cpu | grep vlc | grep -v grep | cut -d" " -f 6`
+  echo ${percent_cpu}
+  off=`echo ${percent_cpu}'<'20.0 | bc -l`
+  if [ $off -eq 1 ]; then
+    pkill vlc
+    echo "========================================================================" >> $LOGFILE
+    echo "running live stream at " `date` >> $LOGFILE
+    DISPLAY=:0 vlc ${OPTIONS} ${DEST} &>> $LOGFILE &
+  fi
 fi

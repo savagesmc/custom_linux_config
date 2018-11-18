@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "stats" $'\cc' | nc -q 1 -C localhost 4212
