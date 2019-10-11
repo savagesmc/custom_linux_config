@@ -32,17 +32,18 @@ cat << EOF
 EOF
 }
 
-
 PASSWORD=${USER}
 
 create_adduser_script()
 {
-echo "#!/bin/bash" > $ADDUSER_SCRIPT
-echo "groupadd -g ${GID} ${GROUP}" >> $ADDUSER_SCRIPT
-echo "useradd -M -s /usr/bin/zsh -g ${GID} -u ${UID} ${USER}" >> $ADDUSER_SCRIPT
-echo "echo ${USER}:${PASSWORD} | chpasswd" >> $ADDUSER_SCRIPT
-echo "usermod -aG sudo ${USER}" >> $ADDUSER_SCRIPT
-echo "echo created user ${USER}" >> $ADDUSER_SCRIPT
+cat << EOF > $ADDUSER_SCRIPT
+#!/bin/bash
+groupadd -g ${GID} ${GROUP}
+useradd -M -s /usr/bin/zsh -g ${GID} -u ${UID} ${USER}
+echo ${USER}:${PASSWORD} | chpasswd
+usermod -aG sudo ${USER}
+echo created user ${USER}
+EOF
 chmod a+x $ADDUSER_SCRIPT
 echo "adduser script $ADDUSER_SCRIPT created"
 }
@@ -50,7 +51,7 @@ echo "adduser script $ADDUSER_SCRIPT created"
 NVIDIA=""
 
 TAG=$USER
-INTERACTIVE=""
+INTERACTIVE="-d"
 
 while getopts "hi:t:NI" arg; do
    case $arg in
@@ -74,16 +75,23 @@ while getopts "hi:t:NI" arg; do
 done
 shift $((OPTIND-1))
 
-docker run $NVIDIA $INTERACTIVE -d --rm --privileged \
-   -v ${HOME_}:${HOME} \
+MOUNTS="-v ${HOME_}:${HOME}"
+for m in /mnt/*
+do
+   MOUNTS=${MOUNTS}" -v ${m}:${m}"
+done
+
+echo ${MOUNTS}
+
+docker run $NVIDIA $INTERACTIVE --rm --privileged \
+   ${MOUNTS} \
    --name $TAG \
-   $IMAGE \
-   $OPTARG
+   $OPTARG $IMAGE
 
 # Create user account for $USER
 create_adduser_script
 docker exec $TAG /bin/bash -c $RUN_ADDUSER
-#rm $ADDUSER_SCRIPT
+rm $ADDUSER_SCRIPT
 
 IPADDR=`docker inspect $TAG | grep \"IPAddress\": | cut -d":" -f 2 | sed 's/\"//g' | sed 's/,//g' | uniq`
 

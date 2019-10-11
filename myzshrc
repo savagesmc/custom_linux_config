@@ -1,12 +1,9 @@
 alias vm=mv
+alias la='ls -ltra'
 alias sl=ls
-alias xhost="xhost;echo $DISPLAY"
+alias xhost="xhost;echo ${DISPLAY}"
 
 alias di='docker images | grep -v "^<none>"'
-
-if [[ -z $DISPLAY ]]; then
-   export DISPLAY=localhost:0.0
-fi
 
 [ -e ~/.dircolors ] && eval $(dircolors -b ~/.dircolors) || eval $(dircolors -b)
 
@@ -50,4 +47,8 @@ fi
 
 if [[ -d ${HOME}/.local/bin ]]; then
   export PATH=${HOME}/.local/bin:${PATH}
+fi
+
+if [[ -d ${HOME}/.local/lib ]]; then
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/.local/lib
 fi
