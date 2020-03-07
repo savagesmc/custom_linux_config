@@ -3,6 +3,8 @@ alias la='ls -ltra'
 alias sl=ls
 alias xhost="xhost;echo ${DISPLAY}"
 
+[ -e /usr/bin/xclock ] && [ -z $DISPLAY ] && export DISPLAY=localhost:0.0
+
 alias di='docker images | grep -v "^<none>"'
 
 [ -e ~/.dircolors ] && eval $(dircolors -b ~/.dircolors) || eval $(dircolors -b)
@@ -51,4 +53,16 @@ fi
 
 if [[ -d ${HOME}/.local/lib ]]; then
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/.local/lib
+fi
+
+if [[ `uname -a | grep Microsoft` ]]; then
+  if [[ ! -z ~/Anaconda3 ]]; then 
+    export PATH=~/Anaconda3:~/Anaconda3/Scripts:$PATH
+    alias python="python.exe"
+    alias conda="conda.exe"
+    alias activate="conda.exe shell.zsh activate"
+    alias pip="pip.exe"
+    alias nosetests="nosetests.exe"
+    alias nvidia-smi="/c/Pgrogram\ Files/NVIDIA\ Corporation/NVSMI/nvidia-smi.exe"
+  fi
 fi
