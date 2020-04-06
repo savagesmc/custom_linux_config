@@ -1,0 +1,27 @@
+export PULSE_SERVER=tcp:127.0.0.1;
+
+ZSH_THEME="candy"
+
+[ -e ~/scripts/setup_proxy ] && source ~/scripts/setup_proxy
+
+export DOCKER_HOST='tcp://0.0.0.0:2375'
+# sudo mount --bind /mnt/c /c
+
+WIN_EXES=(
+cmake.exe
+vcpkgs.exe
+msbuild.exe
+vlc.exe
+ffmpeg.exe
+docker.exe
+)
+
+WIN_EXES=
+
+for WIN_EXE in ${WIN_EXES[@]}
+do
+  LX_EXE=${$(basename -- "${WIN_EXE}")%.*}
+  if [[ ! -z `which ${WIN_EXE} | grep -v "not found" ` ]]; then
+    alias $LX_EXE="${WIN_EXE}"
+  fi
+done

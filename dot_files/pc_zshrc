@@ -1,0 +1,11 @@
+if [[ -d /cygdrive/c/Users/smclark/AppData/Local/autojump/bin ]]; then
+  export PATH=$PATH:/cygdrive/c/Users/smclark/AppData/Local/autojump/bin
+fi
+
+alias cmake="/cygdrive/c/Program\ Files/CMake/bin/cmake.exe"
+alias msbuild="msbuild.exe"
+
+ZSH_THEME="candy"
+
+# VLC
+export PATH=$PATH:/cygdrive/c/Program\ Files\ \(x86\)/VideoLAN/VLC

@@ -1,0 +1,21 @@
+ZSH_THEME="candy"
+#ZSH_THEME="powerlevel9k/powerlevel9k"
+#POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+#POWERLEVEL9K_SHORTEN_DELIMITER=""
+#POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+
+
+if [[ ! -z `which nautilus` ]]; then
+   alias fm="nautilus --no-desktop"
+fi
+
+# NVIDIA/CUDA Stuff (nvidia-docker containers)
+if [[ -e /usr/local/cuda ]]; then
+   export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+   export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH
+   export LIBRARY_PATH=/usr/local/cuda/lib64/stubs:$LIBRARY_PATH
+fi
+
+if [[ -e ~/scripts/setup_proxy ]]; then
+   . ~/scripts/setup_proxy
+fi

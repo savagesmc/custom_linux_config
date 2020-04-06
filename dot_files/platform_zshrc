@@ -1,0 +1,17 @@
+if [[ `uname -a ` =~ "Microsoft" ]]; then
+  export PLATFORM="WSL"
+  export PLATFORM_SCRIPT=~/.wsl_zshrc
+elif [[ `uname -a ` =~ "Linux" ]]; then
+  export PLATFORM="LINUX"
+  export PLATFORM_SCRIPT=~/.linux_zshrc
+else
+  export PLATFORM="CYGWIN"
+  export PLATFORM_SCRIPT=~/.pc_zshrc
+fi
+
+if [[ ${PLATFORM} -eq "WSL" || ${PLATFORM} -eq  "CYGWIN"  \
+      && -e ~/.ssh_port_forwarding ]]; then
+  . ~/.ssh_port_forwarding
+else
+  SSH_PORT_FWD=""
+fi

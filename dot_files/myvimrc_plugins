@@ -1,1 +1,6 @@
 Plug 'jlanzarotta/bufexplorer'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'vim-scripts/DirDiff.vim'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'wesQ3/vim-windowswap'
+Plug 'Valloric/YouCompleteMe'

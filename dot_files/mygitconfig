@@ -1,19 +1,22 @@
 [user]
-	name = Clark, Steve
-	email = steve@clarkhome.org
-[sendemail]
-	smtpserver = smtp.gmail.com
-	smtpserverport = 25
-	suppresscc = self
-[push]
-	default = simple
+	name = Stephen M. Clark
+	email = stephen.m.clark@rockwellcollins.com
+[credential]
+	helper = store --file ~/.git/.credentials
 [diff]
 	tool = vimdiff
 [difftool]
 	prompt = false
 [merge]
 	tool = vimdiff
-[credential]
-	helper = store --file ~/.git/.credentials
-[oh-my-zsh]
-	hide-status = 1
+[alias]
+   pl = log --graph --format=oneline --abbrev-commit --decorate --all
+[push]
+	default = simple
+[diff "zip"]
+	textconv = unzip -c -a
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
