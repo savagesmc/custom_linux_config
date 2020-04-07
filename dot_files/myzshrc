@@ -47,7 +47,6 @@ sshcu() {
 sta() {
 	DISPLAY=localhost:0.0 ssh -Y $1 -t tmux attach -t $2
 }
-
 ssta() {
 	DISPLAY=localhost:0.0 ssh -Y $1 -t ssh -Y $2 -t tmux attach -t $3
 }
@@ -67,6 +66,16 @@ stl() {
 if [[ -e /usr/bin/nvim ]]; then
 	alias vim=nvim
 	alias vi=nvim
+fi
+
+if [[ -d /home/smclark/home/Anaconda3 ]]; then
+  export PATH=/home/smclark/home/Anaconda3:/home/smclark/home/Anaconda3/Scripts:$PATH
+  alias conda='conda.exe'
+  alias python='python.exe'
+  alias conact='conda.exe shell.zsh activate'
+  alias nosetests='nosetests.exe'
+  alias pip=pip.exe
+  alias nvidia-smi="/c/Program\ Files/NVIDIA\ Corporation/NVSMI/nvidia-smi.exe"
 fi
 
 source ~/.zshrc_ssh-agent
