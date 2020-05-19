@@ -1,6 +1,6 @@
 . ~/.platform_zshrc
 
-#[ -z $DISPLAY ] && export DISPLAY=localhost:0.0
+[ -z $DISPLAY ] && export DISPLAY=localhost:0.0
 
 alias ls='ls --color=auto'
 eval `dircolors $HOME/.dircolors`
@@ -21,11 +21,11 @@ dmac() {
 }
 
 sshx() {
-	DISPLAY=localhost:0.0 ssh -Y ${SSH_PORT_FWD[@]} $@
+	DISPLAY=localhost:0.0 ssh -YC ${SSH_PORT_FWD[@]} $@
 }
 
 sshy() {
-	DISPLAY=localhost:0.0 ssh -Y $@
+	DISPLAY=localhost:0.0 ssh -YC $@
 }
 
 sshc() {
@@ -45,23 +45,23 @@ sshcu() {
 }
 
 sta() {
-	DISPLAY=localhost:0.0 ssh -Y $1 -t tmux attach -t $2
+	DISPLAY=localhost:0.0 ssh -YC $1 -t tmux attach -t $2
 }
 
 ssta() {
-	DISPLAY=localhost:0.0 ssh -Y $1 -t ssh -Y $2 -t tmux attach -t $3
+	DISPLAY=localhost:0.0 ssh -YC $1 -t ssh -Y $2 -t tmux attach -t $3
 }
 
 stad() {
-	DISPLAY=localhost:0.0 ssh -Y $1 -t tmux attach -d -t $2
+	DISPLAY=localhost:0.0 ssh -YC $1 -t tmux attach -d -t $2
 }
 
 sts() {
-	DISPLAY=localhost:0.0 ssh -Y $1 -t tmux new-session -s $2
+	DISPLAY=localhost:0.0 ssh -YC $1 -t tmux new-session -s $2
 }
 
 stl() {
-	DISPLAY=localhost:0.0 ssh -Y $1 -t tmux list-sessions 2&>/dev/null
+	DISPLAY=localhost:0.0 ssh -YC $1 -t tmux list-sessions 2&>/dev/null
 }
 
 if [[ -e /usr/bin/nvim ]]; then
@@ -71,8 +71,13 @@ fi
 
 source ~/.zshrc_ssh-agent
 
-export PATH=$PATH:$HOME/scripts:$HOME/.local/bin
+if [[ $PATH == *"$HOME/.local/bin"*  ]]; then
+   export PATH=$PATH:$HOME/.local/bin
+fi
+
+if [[ $PATH == *"$HOME/scripts"*  ]]; then
+   export PATH=$PATH:$HOME/scripts
+fi
 
 [ ! -z ${PLATFORM_SCRIPT} ] && source ${PLATFORM_SCRIPT}
 [ -e ~/scripts/setup_proxy ] && source ~/scripts/setup_proxy
-
