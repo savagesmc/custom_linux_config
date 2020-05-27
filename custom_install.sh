@@ -13,8 +13,10 @@ case "$(uname -s)" in
     ;;
 esac
 
-if [[ -d ~/.vim/plugged/youcompleteme ]]; then
-  python3 ./install.py --clang-completer
+if [[ -d ~/.vim/plugged/YouCompleteMe ]]; then
+   pushd ~/.vim/plugged/YouCompleteMe
+   python3 ./install.py --clang-completer
+   popd
 fi
 
 #Install neovim plugins

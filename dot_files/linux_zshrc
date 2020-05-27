@@ -16,6 +16,6 @@ if [[ -e /usr/local/cuda ]]; then
    export LIBRARY_PATH=/usr/local/cuda/lib64/stubs:$LIBRARY_PATH
 fi
 
-if [[ -e ~/scripts/setup_proxy ]]; then
-   . ~/scripts/setup_proxy
-fi
+HWTRIG=9c5666acf5bdddf0a7c818467f8a11
+RTBETRIG=5bc8e10c4798d3fb6b72e4b201b1f7
+DLOSTRIG=70b0a3c322fdc7987637c47d5a5708

@@ -2,8 +2,6 @@ export PULSE_SERVER=tcp:127.0.0.1;
 
 ZSH_THEME="candy"
 
-[ -e ~/scripts/setup_proxy ] && source ~/scripts/setup_proxy
-
 export DOCKER_HOST='tcp://0.0.0.0:2375'
 # sudo mount --bind /mnt/c /c
 

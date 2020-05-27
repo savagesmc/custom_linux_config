@@ -1,0 +1,4 @@
+#!/bin/bash
+[ ! -d $HOME/logs ] && mkdir -p $HOME/logs
+script -a $HOME/logs/console.log.$$ -c "/usr/bin/telnet $*"
+exit 0
