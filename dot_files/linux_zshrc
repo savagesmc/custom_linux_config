@@ -4,6 +4,8 @@ ZSH_THEME="candy"
 #POWERLEVEL9K_SHORTEN_DELIMITER=""
 #POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
 
+alias ls='ls --color=auto'
+eval `dircolors $HOME/.dircolors`
 
 if [[ ! -z `which nautilus` ]]; then
    alias fm="nautilus --no-desktop"

@@ -7,5 +7,8 @@ alias msbuild="msbuild.exe"
 
 ZSH_THEME="candy"
 
+alias ls='ls --color=auto'
+eval `dircolors $HOME/.dircolors`
+
 # VLC
 export PATH=$PATH:/cygdrive/c/Program\ Files\ \(x86\)/VideoLAN/VLC

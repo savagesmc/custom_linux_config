@@ -2,9 +2,6 @@
 
 [ -z $DISPLAY ] && export DISPLAY=localhost:0.0
 
-alias ls='ls --color=auto'
-eval `dircolors $HOME/.dircolors`
-
 alias xhost="xhost; echo $DISPLAY"
 alias dcu='docker-compose -p $USER'
 
