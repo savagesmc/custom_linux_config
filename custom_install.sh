@@ -11,6 +11,9 @@ case "$(uname -s)" in
     sudo apt-get install -y build-essential cmake python3-dev neovim python3-neovim
     sudo apt-get install -y python3-dev python3-pip python3-setuptools
     ;;
+  Darwin)
+    brew install python3 cmake
+    ;;
 esac
 
 if [[ -d ~/.vim/plugged/YouCompleteMe ]]; then
