@@ -1,6 +1,6 @@
 [user]
 	name = Stephen M. Clark
-	email = stephen.m.clark@rockwellcollins.com
+	email = stephen.m.clark@collins.com
 [credential]
 	helper = store --file ~/.git/.credentials
 [diff]
