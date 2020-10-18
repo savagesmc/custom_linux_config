@@ -68,13 +68,8 @@ fi
 
 source ~/.zshrc_ssh-agent
 
-if [[ $PATH == *"$HOME/.local/bin"*  ]]; then
-   export PATH=$PATH:$HOME/.local/bin
-fi
-
-if [[ $PATH == *"$HOME/scripts"*  ]]; then
-   export PATH=$PATH:$HOME/scripts
-fi
+[ -d "$HOME/.local/bin" ] && export PATH=$PATH:$HOME/.local/bin
+[ -d "$HOME/scripts"  ] && export PATH=$PATH:$HOME/scripts
 
 [ ! -z ${PLATFORM_SCRIPT} ] && source ${PLATFORM_SCRIPT}
 [ -e ~/scripts/setup_proxy ] && source ~/scripts/setup_proxy
