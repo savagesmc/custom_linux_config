@@ -69,8 +69,11 @@ fi
 
 source ~/.zshrc_ssh-agent
 
-[ -d "$HOME/.local/bin" ] && export PATH=$PATH:$HOME/.local/bin
-[ -d "$HOME/scripts"  ] && export PATH=$PATH:$HOME/scripts
+[[ -d $HOME/.local/bin ]] && [[ ! $PATH == *"$HOME/.local/bin"*  ]] && export PATH=$PATH:$HOME/.local/bin
+[[ -d $HOME/scripts ]] && [[ ! $PATH == *"$HOME/scripts"*  ]] && export PATH=$PATH:$HOME/scripts
 
 [ ! -z ${PLATFORM_SCRIPT} ] && source ${PLATFORM_SCRIPT}
 [ -e ~/scripts/setup_proxy ] && source ~/scripts/setup_proxy
+
+alias cdb="cd /src/.cache/artifact_stage/sw/x86-64/boards/common/bin"
+alias cdh="cd /src/providers/hw"
