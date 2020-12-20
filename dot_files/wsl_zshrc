@@ -3,7 +3,7 @@ export PULSE_SERVER=tcp:127.0.0.1;
 ZSH_THEME="candy"
 
 eval `dircolors $HOME/.dircolors`
-export DOCKER_HOST='tcp://0.0.0.0:2375'
+# export DOCKER_HOST='tcp://0.0.0.0:2375'
 
 WIN_EXES=(
 cmake.exe
@@ -29,4 +29,11 @@ done
 if [[ $PLATFORM == "WSL2" ]]; then
   export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
   export LIBGL_ALWAYS_INDRECT=1
+fi
+
+# NVIDIA/CUDA Stuff
+if [[ -e /usr/local/cuda ]]; then
+   export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+   export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH
+   export LIBRARY_PATH=/usr/local/cuda/lib64/stubs:$LIBRARY_PATH
 fi
