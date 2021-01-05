@@ -1,5 +1,10 @@
 export PULSE_SERVER=tcp:127.0.0.1;
 
+# For x11 forwarding in WSL2
+#export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+#echo WSL - set DISPLAY to $DISPLAY
+#export LIBGL_ALWAYS_INDIRECT=1
+
 ZSH_THEME="candy"
 
 eval `dircolors $HOME/.dircolors`
