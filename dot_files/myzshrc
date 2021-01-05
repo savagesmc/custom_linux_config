@@ -4,6 +4,7 @@
 
 alias xhost="xhost; echo $DISPLAY"
 alias dcu='docker-compose -p $USER'
+alias d="echo $DISPLAY"
 
 dodig() {
    dig $1 | grep $1 | grep -v Ubuntu
@@ -18,11 +19,11 @@ dmac() {
 }
 
 sshx() {
-	DISPLAY=localhost:0.0 ssh -YC ${SSH_PORT_FWD[@]} $@
+	ssh -YC ${SSH_PORT_FWD[@]} $@
 }
 
 sshy() {
-	DISPLAY=localhost:0.0 ssh -YC $@
+	ssh -YC $@
 }
 
 sshc() {
@@ -42,22 +43,22 @@ sshcu() {
 }
 
 sta() {
-	DISPLAY=localhost:0.0 ssh -YC $1 -t tmux attach -t $2
+	ssh -YC $1 -t tmux attach -t $2
 }
 ssta() {
-	DISPLAY=localhost:0.0 ssh -YC $1 -t ssh -Y $2 -t tmux attach -t $3
+	ssh -YC $1 -t ssh -Y $2 -t tmux attach -t $3
 }
 
 stad() {
-	DISPLAY=localhost:0.0 ssh -YC $1 -t tmux attach -d -t $2
+	ssh -YC $1 -t tmux attach -d -t $2
 }
 
 sts() {
-	DISPLAY=localhost:0.0 ssh -YC $1 -t tmux new-session -s $2
+	ssh -YC $1 -t tmux new-session -s $2
 }
 
 stl() {
-	DISPLAY=localhost:0.0 ssh -YC $1 -t tmux list-sessions 2&>/dev/null
+	ssh -YC $1 -t tmux list-sessions 2&>/dev/null
 }
 
 if [[ -e /usr/bin/nvim ]]; then
@@ -77,13 +78,11 @@ fi
 
 source ~/.zshrc_ssh-agent
 
-if [[ $PATH == *"$HOME/.local/bin"*  ]]; then
-   export PATH=$PATH:$HOME/.local/bin
-fi
-
-if [[ $PATH == *"$HOME/scripts"*  ]]; then
-   export PATH=$PATH:$HOME/scripts
-fi
+[[ -d $HOME/.local/bin ]] && [[ ! $PATH == *"$HOME/.local/bin"*  ]] && export PATH=$PATH:$HOME/.local/bin
+[[ -d $HOME/scripts ]] && [[ ! $PATH == *"$HOME/scripts"*  ]] && export PATH=$PATH:$HOME/scripts
 
 [ ! -z ${PLATFORM_SCRIPT} ] && source ${PLATFORM_SCRIPT}
 [ -e ~/scripts/setup_proxy ] && source ~/scripts/setup_proxy
+
+alias cdb="cd /src/.cache/artifact_stage/sw/x86-64/boards/common/bin"
+alias cdh="cd /src/providers/hw"
