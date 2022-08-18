@@ -61,9 +61,13 @@ stl() {
 	ssh -YC $1 -t tmux list-sessions 2&>/dev/null
 }
 
-if [[ -e /usr/bin/nvim ]]; then
+if [[ ! -z $(which nvim) ]]; then
 	alias vim=nvim
 	alias vi=nvim
+fi
+
+if [[ ! -z $(which vi) ]]; then
+	alias vi=vim
 fi
 
 if [[ -d /home/smclark/home/Anaconda3 ]]; then
