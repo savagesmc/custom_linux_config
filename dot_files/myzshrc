@@ -62,14 +62,14 @@ stl() {
 }
 
 
-if [[ ! -z $(which nvim) ]]; then
-	alias vim=nvim
-	alias vi=nvim
-fi
+#if [[ ! -z $(which nvim) ]]; then
+#	alias vim=nvim
+#	alias vi=nvim
+#fi
 
-if [[ ! -z $(which vi) ]]; then
-	alias vi=vim
-fi
+#if [[ ! -z $(which vi) ]]; then
+#	alias vi=vim
+#fi
 
 if [[ -d /home/smclark/home/Anaconda3 ]]; then
   export PATH=/home/smclark/home/Anaconda3:/home/smclark/home/Anaconda3/Scripts:$PATH

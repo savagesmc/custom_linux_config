@@ -1,7 +1,13 @@
 filetype indent on
 
+function! FindFilesToLocationList(the_arg)
+   let the_com = "find . -name '" . a:the_arg . "' -exec awk '$1 != \"\" && n < 1 {print FILENAME\":1:1:\"$0; n++}' {} \\;"
+   lgetexpr system(the_com)
+   let w:quickfix_title = the_com
+endfunction
+
 """""""""""""""""""""""""""""""""""""""""
-let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 
 "YouCompleteMe shortcuts
 nnoremap <leader>g :YcmCompleter GoTo<CR>
@@ -30,57 +36,6 @@ nnoremap <leader>r :YcmCompleter GoToReferences<CR>
 """""""""""""""""""""""""""""""""""""""""
 "Replay last macro by typing enter
 nnoremap <Enter> @@
-
-if has('nvim')
-   "Using xclip for better clipboard integration:
-   "https://github.com/neovim/neovim/issues/6097
-   set clipboard+=unnamedplus
-   let g:os = substitute(system('uname -a'), '\n', '', '')
-
-   if g:os =~ "Microsoft"
-      "WSL detected, we need to do some weirdness to interact
-      " with the system clipboard ...
-      "Figured this out by looking at this:
-      " https://github.com/neovim/neovim/blob/master/runtime/autoload/provider/clipboard.vim
-      let g:clipboard = {
-               \   'name': 'myClipboard',
-               \   'copy': {
-               \      '+': 'nvimCopy.sh',
-               \      '*': 'nvimCopy.sh',
-               \    },
-               \   'paste': {
-               \      '+': "nvimPaste.sh",
-               \      '-': "nvimPaste.sh",
-               \   },
-               \   'cache_enabled': 1,
-               \ }
-   else
-      if executable('xclip') == 1
-         " This is faster than the default xsel for linux
-         " Loopks like this is the default in newer version of neovim:
-         " https://github.com/neovim/neovim/pull/9302
-         let g:clipboard = {
-                  \   'name': 'fast_xclip',
-                  \   'copy': {
-                  \      '+': 'xclip -quiet -i -selection primary',
-                  \      '*': 'xclip -quiet -i -selection primary',
-                  \    },
-                  \   'paste': {
-                  \      '+': 'xclip -o -selection primary',
-                  \      '-': 'xclip -o -selection primary',
-                  \   },
-                  \   'cache_enabled': 1,
-                  \ }
-      endif
-   endif
-
-   "Use Escape to exit terminal "insert" mode
-   tnoremap <Esc> <C-\><C-n>
-
-   "Meta-[ will send escape to terminal
-   tnoremap <M-[> <Esc>
-
-endif
 
 "Some NERDTree customizations take from:
 "https://medium.com/@victormours/a-better-nerdtree-setup-3d3921abc0b9
