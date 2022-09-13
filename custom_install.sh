@@ -20,8 +20,8 @@ if [[ -d ~/.vim/plugged/YouCompleteMe ]]; then
    popd
 fi
 
-#Install neovim plugins
-nvim \
+# Install vim plugins
+vim \
     "+PlugInstall" \
     "+qall"
 
