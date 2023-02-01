@@ -5,6 +5,7 @@
 alias xhost="xhost; echo $DISPLAY"
 alias dcu='docker-compose -p $USER'
 alias d="echo $DISPLAY"
+alias cda="conda deactivate"
 
 dodig() {
    dig $1 | grep $1 | grep -v Ubuntu
