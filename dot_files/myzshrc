@@ -92,3 +92,5 @@ source ~/.zshrc_ssh-agent
 
 alias cdb="cd /src/.cache/artifact_stage/sw/x86-64/boards/common/bin"
 alias cdh="cd /src/providers/hw"
+
+export LD_LIBRARY_PATH=../lib:$LD_LIBRARY_PATH

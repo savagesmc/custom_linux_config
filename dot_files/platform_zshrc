@@ -5,6 +5,11 @@ if [[ -e /etc/lsb-release ]]; then
   if [[ ! -z $DISTRIB_ID ]]; then
     PLATFORM_DISTRO="${DISTRIB_ID}"
   fi
+  if [[ -d ~/.local/${DISTRIB_RELEASE} ]]; then
+    export PATH=~/.local/${DISTRIB_RELEASE}/bin:$PATH
+    export LD_LIBRARY_PATH=~/.local/${DISTRIB_RELEASE}/lib:$LD_LIBRARY_PATH
+    export MANPATH=~/.local/lib/${DISTRIB_RELEASE}/man:$MANPATH
+  fi
 fi
 
 if [[ `uname -a ` =~ "Microsoft" ]]; then
