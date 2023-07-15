@@ -84,8 +84,8 @@ fi
 
 source ~/.zshrc_ssh-agent
 
-[[ -d $HOME/.local/bin ]] && [[ ! $PATH == *"$HOME/.local/bin"*  ]] && export PATH=$PATH:$HOME/.local/bin
-[[ -d $HOME/scripts ]] && [[ ! $PATH == *"$HOME/scripts"*  ]] && export PATH=$PATH:$HOME/scripts
+[[ -d $HOME/.local/bin ]] && [[ ! $PATH == *"$HOME/.local/bin"*  ]] && export PATH=$HOME/.local/bin:$PATH
+[[ -d $HOME/scripts ]] && [[ ! $PATH == *"$HOME/scripts"*  ]] && export PATH=$HOME/scripts:$PATH
 
 [ ! -z ${PLATFORM_SCRIPT} ] && source ${PLATFORM_SCRIPT}
 [ -e ~/scripts/setup_proxy ] && source ~/scripts/setup_proxy

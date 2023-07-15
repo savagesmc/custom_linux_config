@@ -32,8 +32,8 @@ done
 
 #WSL-2
 if [[ $PLATFORM == "WSL2" ]]; then
-  export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-  export LIBGL_ALWAYS_INDRECT=1
+   export DISPLAY=$(ip route list default | awk '{print $3}'):0
+   export LIBGL_ALWAYS_INDIRECT=1
 fi
 
 # NVIDIA/CUDA Stuff
