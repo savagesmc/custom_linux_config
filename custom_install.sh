@@ -5,6 +5,24 @@ if [[ ! -d ~/.oh-my-zsh/custom/themes/powerlevel9k ]]; then
    git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 fi
 
+#Install Vim plugins
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+#Install vim plugins
+vim \
+    "+PlugInstall" \
+    "+PlugClean" \
+    "+qall"
+
+case "$(uname -s)" in
+
+   Darwin)
+     echo 'export EDITOR=/usr/local/bin/nvim' >> ~/.zshrc
+     ;;
+
+esac
+
 if [ -e /usr/bin/apt-get ]; then
   sudo apt-get update -y
   sudo apt-get install -y build-essential cmake python3-dev neovim python3-neovim
