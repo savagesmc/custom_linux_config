@@ -48,12 +48,6 @@ let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
-"Move vim around windows with ctrl-<hjkl>
-imap <C-h> <C-o>h
-imap <C-j> <C-o>j
-imap <C-k> <C-o>k
-imap <C-l> <C-o>l
-
 "https://superuser.com/questions/77800/vims-autocomplete-how-to-prevent-vim-to-read-some-include-files
 set include=^\\s*#\\s*include\ \\(<boost/\\)\\@!
 

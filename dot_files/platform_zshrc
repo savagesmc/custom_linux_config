@@ -12,22 +12,27 @@ if [[ -e /etc/lsb-release ]]; then
   fi
 fi
 
-if [[ `uname -a ` =~ "Microsoft" ]]; then
-  export PLATFORM="WSL"
-  export PLATFORM_SCRIPT=~/.wsl_zshrc
-elif [[ `uname -a ` =~ "microsoft" ]]; then
-  export PLATFORM="WSL2"
-  export PLATFORM_SCRIPT=~/.wsl_zshrc
-elif [[ `uname -a ` =~ "Darwin" ]]; then
-  export PLATFORM="OSX"
-  export PLATFORM_SCRIPT=~/.osx_zshrc
-elif [[ `uname -a ` =~ "Linux" ]]; then
-  export PLATFORM="LINUX"
-  export PLATFORM_SCRIPT=~/.linux_zshrc
-else
-  export PLATFORM="CYGWIN"
-  export PLATFORM_SCRIPT=~/.pc_zshrc
+export PLATFORM=UNK
+
+if [ -e ${HOME}/scripts/platform.sh ]; then
+   source ${HOME}/scripts/platform.sh
+   export PLATFORM=$(get_platform)
 fi
+
+case $PLATFORM in
+   WSL||WSL2)
+      export PLATFORM_SCRIPT=~/.wsl_zshrc
+      ;;
+   OSX)
+      export PLATFORM_SCRIPT=~/.osx_zshrc
+      ;;
+   LINUX)
+      export PLATFORM_SCRIPT=~/.linux_zshrc
+      ;;
+   CYGWIN)
+      export PLATFORM_SCRIPT=~/.pc_zshrc
+      ;;
+esac
 
 if [[ ${PLATFORM} -eq "WSL" || ${PLATFORM} -eq "WSL2" || ${PLATFORM} -eq  "CYGWIN"  \
       && -e ~/.ssh_port_forwarding ]]; then

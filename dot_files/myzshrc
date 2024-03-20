@@ -72,18 +72,9 @@ stl() {
 #	alias vi=vim
 #fi
 
-if [[ -d /home/smclark/home/Anaconda3 ]]; then
-  export PATH=/home/smclark/home/Anaconda3:/home/smclark/home/Anaconda3/Scripts:$PATH
-  alias conda='conda.exe'
-  alias python='python.exe'
-  alias conact='conda.exe shell.zsh activate'
-  alias nosetests='nosetests.exe'
-  alias pip=pip.exe
-  alias nvidia-smi="/c/Program\ Files/NVIDIA\ Corporation/NVSMI/nvidia-smi.exe"
-fi
-
 source ~/.zshrc_ssh-agent
 
+[[ -d $HOME/.cargo/bin ]] && [[ ! $PATH == *"$HOME/.cargo/bin"*  ]] && export PATH=$HOME/.cargo/bin:$PATH
 [[ -d $HOME/.local/bin ]] && [[ ! $PATH == *"$HOME/.local/bin"*  ]] && export PATH=$HOME/.local/bin:$PATH
 [[ -d $HOME/scripts ]] && [[ ! $PATH == *"$HOME/scripts"*  ]] && export PATH=$HOME/scripts:$PATH
 

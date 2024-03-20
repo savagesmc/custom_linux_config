@@ -4,10 +4,11 @@ ZSH_THEME="candy"
 #POWERLEVEL9K_SHORTEN_DELIMITER=""
 #POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
 #
+TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins
 
 eval $(gdircolors ~/.dircolors)
 alias ls='gls --color=auto'
 
-HWTRIG=9c5666acf5bdddf0a7c818467f8a11
-RTBETRIG=5bc8e10c4798d3fb6b72e4b201b1f7
-DLOSTRIG=70b0a3c322fdc7987637c47d5a5708
+# For tinygrad gpu acceleration
+export METAL_XCODE=1
+export DISABLE_COMPILER_CACHE=1
