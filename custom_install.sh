@@ -1,19 +1,17 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "CUSTOM INSTALL"
 
 if [[ ! -d ~/.oh-my-zsh/custom/themes/powerlevel9k ]]; then
    git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 fi
 
-#Install Vim plugins
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+## rm -rf ~/user_install
+## mkdir -p ~/user_install
 
-#Install vim plugins
-vim \
-    "+PlugInstall" \
-    "+PlugClean" \
-    "+qall"
+mkdir -p ~/.config
+
+ln -sf ${DIR}/nvim_config ~/.config/nvim
 
 case "$(uname -s)" in
 
@@ -22,24 +20,4 @@ case "$(uname -s)" in
      ;;
 
 esac
-
-if [ -e /usr/bin/apt-get ]; then
-  sudo apt-get update -y
-  sudo apt-get install -y build-essential cmake python3-dev neovim python3-neovim
-  sudo apt-get install -y python3-dev python3-pip python3-setuptools
-elif [[ $(which brew) ]]; then
-  brew install python3 cmake llvm
-  # TODO:
-fi
-
-if [[ -d ~/.vim/plugged/YouCompleteMe ]]; then
-   pushd ~/.vim/plugged/YouCompleteMe
-   python3 ./install.py --clang-completer
-   popd
-fi
-
-# Install vim plugins
-vim \
-    "+PlugInstall" \
-    "+qall"
 

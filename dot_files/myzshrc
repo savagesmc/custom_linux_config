@@ -63,14 +63,10 @@ stl() {
 }
 
 
-#if [[ ! -z $(which nvim) ]]; then
-#	alias vim=nvim
-#	alias vi=nvim
-#fi
-
-#if [[ ! -z $(which vi) ]]; then
-#	alias vi=vim
-#fi
+if [[ ! -z $(which nvim) ]]; then
+	alias vim=nvim
+	alias vi=nvim
+fi
 
 source ~/.zshrc_ssh-agent
 
