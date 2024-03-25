@@ -36,6 +36,8 @@ local options = {
   guifont = "monospace:h17",               -- the font used in graphical neovim applications
 }
 
+vim.g.have_nerd_font = true
+
 vim.opt.shortmess:append "c"
 
 vim.highlight.on_yank({timeout=500})
