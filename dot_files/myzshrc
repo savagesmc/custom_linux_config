@@ -7,6 +7,21 @@ alias dcu='docker-compose -p $USER'
 alias d="echo $DISPLAY"
 alias cda="conda deactivate"
 
+source ~/.zshrc_ssh-agent
+
+[[ -d $HOME/.cargo/bin ]] && [[ ! $PATH == *"$HOME/.cargo/bin"*  ]] && export PATH=$HOME/.cargo/bin:$PATH
+[[ -d $HOME/.local/bin ]] && [[ ! $PATH == *"$HOME/.local/bin"*  ]] && export PATH=$HOME/.local/bin:$PATH
+[[ -d $HOME/scripts ]] && [[ ! $PATH == *"$HOME/scripts"*  ]] && export PATH=$HOME/scripts:$PATH
+
+[ ! -z ${PLATFORM_SCRIPT} ] && source ${PLATFORM_SCRIPT}
+[ -e ~/scripts/setup_proxy ] && source ~/scripts/setup_proxy
+
+if [[ ! -z $(which nvim) ]]; then
+	alias vim=nvim
+  alias vimdiff="nvim -d"
+	alias vi=nvim
+fi
+
 dodig() {
    dig $1 | grep $1 | grep -v Ubuntu
 }
@@ -61,21 +76,6 @@ sts() {
 stl() {
 	ssh -YC $1 -t tmux list-sessions 2&>/dev/null
 }
-
-
-if [[ ! -z $(which nvim) ]]; then
-	alias vim=nvim
-	alias vi=nvim
-fi
-
-source ~/.zshrc_ssh-agent
-
-[[ -d $HOME/.cargo/bin ]] && [[ ! $PATH == *"$HOME/.cargo/bin"*  ]] && export PATH=$HOME/.cargo/bin:$PATH
-[[ -d $HOME/.local/bin ]] && [[ ! $PATH == *"$HOME/.local/bin"*  ]] && export PATH=$HOME/.local/bin:$PATH
-[[ -d $HOME/scripts ]] && [[ ! $PATH == *"$HOME/scripts"*  ]] && export PATH=$HOME/scripts:$PATH
-
-[ ! -z ${PLATFORM_SCRIPT} ] && source ${PLATFORM_SCRIPT}
-[ -e ~/scripts/setup_proxy ] && source ~/scripts/setup_proxy
 
 alias cdb="cd /src/.cache/artifact_stage/sw/x86-64/boards/common/bin"
 alias cdh="cd /src/providers/hw"
