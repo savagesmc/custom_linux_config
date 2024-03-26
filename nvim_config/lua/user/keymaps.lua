@@ -77,6 +77,14 @@ keymap("t", "<C-l>", "<C-\\><C-N><C-w>l", term_opts)
 -- Shortcut to open NERDTree
 keymap("n", "<Leader>ne", ":NERDTreeToggle<CR>", opts)
 
--- Shortcuts for moving between tabs
+-- Shortcuts for managing / moving through tabs
 keymap("n", "<space>", ":tabnext<CR>", opts)
+keymap("n", "S-<space>", ":tabprev<CR>", opts)
+keymap("n", "<leader>tn", ":tabnew<CR>", opts)
+keymap("n", "<leader>td", ":tabdel<CR>", opts)
+
+-- Telescope Shortcuts
+-- keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
+keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
+keymap("n", "<c-t>", "<cmd>Telescope live_grep<cr>", opts)
 
