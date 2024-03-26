@@ -28,7 +28,7 @@ keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 
 -- Lexplore
-keymap("n", "<leader>le", ":Lex 30<cr>", opts)
+keymap("n", "<leader>le", ":Lex 30<CR>", opts)
 
 -- Resize with arrows
 keymap("n", "<C-Up>", ":resize -2<CR>", opts)
@@ -84,7 +84,8 @@ keymap("n", "<leader>tn", ":tabnew<CR>", opts)
 keymap("n", "<leader>td", ":tabdel<CR>", opts)
 
 -- Telescope Shortcuts
--- keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
-keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
-keymap("n", "<c-t>", "<cmd>Telescope live_grep<cr>", opts)
+-- keymap("n", "<leader>f", "<cmd>Telescope find_files<CR>", opts)
+keymap("n", "<leader>T", "<cmd>Telescope", opts)
+keymap("n", "<leader>ft", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<CR>", opts)
+keymap("n", "<leader>tt", "<cmd>Telescope live_grep<CR>", opts)
 
