@@ -98,6 +98,9 @@ return packer.startup(function(use)
   -- DirDiff
   use "vim-scripts/DirDiff.vim"
 
+  -- Conquer of Completion
+  use {'neoclide/coc.nvim', branch = 'release'}
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then
