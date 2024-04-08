@@ -95,6 +95,12 @@ return packer.startup(function(use)
     run = ":TSUpdate",
   }
 
+  -- Status Line (lualine)
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+  }
+
   -- DirDiff
   use "vim-scripts/DirDiff.vim"
 
