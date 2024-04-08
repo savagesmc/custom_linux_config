@@ -3,12 +3,14 @@
 	email = stephen.m.clark@collins.com
 [credential]
 	helper = store --file ~/.git/.credentials
-[diff]
-	tool = vimdiff
 [difftool]
-	prompt = false
+    prompt = true
+[diff]
+    tool = nvimdiff
 [merge]
-	tool = vimdiff
+	tool = nvimdiff
+[difftool "nvimdiff"]
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [alias]
    pl = log --graph --format=oneline --abbrev-commit --decorate --all
 [push]
