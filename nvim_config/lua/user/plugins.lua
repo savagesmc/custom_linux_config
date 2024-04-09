@@ -51,7 +51,6 @@ return packer.startup(function(use)
 
   -- NERDtree
   use "scrooloose/nerdtree"
-  use "scrooloose/nerdcommenter"
   use "Xuyuanp/nerdtree-git-plugin"
 
   -- Colorschemes
@@ -93,6 +92,14 @@ return packer.startup(function(use)
   use {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
+  }
+
+  -- Comments
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+        require('Comment').setup()
+    end
   }
 
   -- Status Line (lualine)

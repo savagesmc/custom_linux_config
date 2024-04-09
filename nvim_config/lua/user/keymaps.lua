@@ -85,7 +85,18 @@ keymap("n", "<leader>td", ":tabdel<CR>", opts)
 
 -- Telescope Shortcuts
 -- keymap("n", "<leader>f", "<cmd>Telescope find_files<CR>", opts)
-keymap("n", "<leader>T", "<cmd>Telescope", opts)
-keymap("n", "<leader>ft", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<CR>", opts)
-keymap("n", "<leader>tt", "<cmd>Telescope live_grep<CR>", opts)
+local status_ok, _ = pcall(require, "telescope")
+if status_ok then
+  keymap("n", "<leader>T", "<cmd>Telescope", opts)
+  keymap("n", "<leader>ft", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<CR>", opts)
+  keymap("n", "<leader>tt", "<cmd>Telescope live_grep<CR>", opts)
+end
 
+status_ok, _ = pcall(require, "gitsigns")
+if status_ok then
+  keymap('n', '<leader>gb', ':Gitsigns blame_line {full=true}<CR>', opts)
+  keymap('n', '<leader>hd', ':Gitsigns diffthis<CR>', opts)
+  -- keymap('n', '<leader>hD', ":Gitsigns diffthis ('~')<CR>", opts)
+  keymap('n', '<leader>tb', ':Gitsigns toggle_current_line_blame<CR>', opts)
+  keymap('n', '<leader>td', ':Gitsigns toggle_deleted<CR>', opts)
+end
