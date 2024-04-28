@@ -57,17 +57,26 @@ vim.cmd([[
   augroup end
 ]])
 
+-- Additional filetypes
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNewFile' }, {
+  pattern = '*.Hut',
+  command = 'set filetype=cpp',
+})
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNewFile' }, {
+  pattern = '*.hut',
+  command = 'set filetype=cpp',
+})
+
 -- Some NERDTree customizations taken from https://github.com/preservim/nerdtree
 vim.cmd([[
   augroup nerdtree
-    autocmd!
-    autocmd StdinReadPre * let s:std_in=1
-    " Start NERDTree (and put cursor back in other window) when vim is started without file arguments
-    autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | wincmd p | endif
+    " Start NERDTree and put the cursor back in the other window.
+    autocmd VimEnter * NERDTree | wincmd p
     " Start NERDTree. If a file is specified, move the cursor to its window.
+    autocmd StdinReadPre * let s:std_in=1
     autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
-    " Close the tab if NERDTree is the only window remaining in it.  
-    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    "Exit Vim if NERDTree is the only window remaining in the only tab.
+    autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
   augroup END
 ]])
 
