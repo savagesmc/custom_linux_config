@@ -102,6 +102,9 @@ return packer.startup(function(use)
     end
   }
 
+  -- gdb
+  use "sakhnik/nvim-gdb"
+
   -- Status Line (lualine)
   use {
     'nvim-lualine/lualine.nvim',
