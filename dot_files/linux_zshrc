@@ -13,9 +13,9 @@ fi
 
 # NVIDIA/CUDA Stuff (nvidia-docker containers)
 if [[ -e /usr/local/cuda ]]; then
-   export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+   export PATH=/usr/local/nvidia/bin:/usr/local/cuda/bin:$PATH
    export LD_LIBRARY_PATH=/usr/local/nvidia/lib:/usr/local/nvidia/lib64:$LD_LIBRARY_PATH
-   export LIBRARY_PATH=/usr/local/cuda/lib64/stubs:$LIBRARY_PATH
+   export LD_LIBRARY_PATH=/usr/local/cuda/lib64/stubs:$LD_LIBRARY_PATH
 fi
 
 HWTRIG=9c5666acf5bdddf0a7c818467f8a11
