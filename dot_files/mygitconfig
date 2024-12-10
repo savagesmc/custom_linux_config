@@ -6,11 +6,9 @@
 [difftool]
     prompt = true
 [diff]
-    tool = nvimdiff
+    tool = vimdiff
 [merge]
-	tool = nvimdiff
-[difftool "nvimdiff"]
-    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+	tool = vimdiff
 [alias]
    pl = log --graph --format=oneline --abbrev-commit --decorate --all
 [push]
