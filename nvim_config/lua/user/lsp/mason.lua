@@ -3,7 +3,7 @@ local servers = {
   "lua_ls",
 	"pyright",
 	"jsonls",
-  "clangd",
+  -- "clangd",
   "cmake",
   "bashls",
 }

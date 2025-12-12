@@ -40,7 +40,7 @@ vim.g.have_nerd_font = true
 
 vim.opt.shortmess:append "c"
 
-vim.highlight.on_yank({timeout=500})
+vim.hl.on_yank({timeout=500})
 
 for k, v in pairs(options) do
   vim.opt[k] = v
@@ -50,12 +50,7 @@ vim.cmd "set whichwrap+=<,>,[,],h,l"
 vim.cmd [[set iskeyword+=-]]
 vim.cmd [[set formatoptions-=cro]] -- TODO: this doesn't seem to work
 
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]])
+----------------------------------------------------------------------------
 
 -- Additional filetypes
 vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNewFile' }, {

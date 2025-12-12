@@ -73,6 +73,9 @@ keymap("x", "<M-k>", ":move '<-2<CR>gv-gv", opts)
 -- Shortcut to toggle NERDTree
 keymap("n", "<Leader>ne", ":NERDTreeToggle<CR>", opts)
 
+-- Shortcut to toggle buffer explorer
+keymap("n", "<Leader>be", ":BufExplorer<CR>", opts)
+
 -- Shortcuts for managing / moving through tabs
 keymap("n", "<space>", ":tabnext<CR>", opts)
 keymap("n", "S-<space>", ":tabprev<CR>", opts)
