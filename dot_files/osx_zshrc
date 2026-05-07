@@ -1,8 +1,10 @@
-ZSH_THEME="candy"
 #ZSH_THEME="powerlevel9k/powerlevel9k"
 #POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 #POWERLEVEL9K_SHORTEN_DELIMITER=""
 #POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+
+ZSH_THEME="candy"
+
 #
 TMUX_PLUGIN_MANAGER_PATH=~/.tmux/plugins
 
