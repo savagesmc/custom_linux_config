@@ -1,2 +1,6 @@
 SSH_PORT_FWD=(
+-L 8888:localhost:8888
+-L 8265:localhost:8265
+-L 33389:localhost:3389
+-R 8000:192.168.236.150:8000
 )

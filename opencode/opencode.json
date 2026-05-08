@@ -1,0 +1,85 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "@thecto/opencode-debug-plugin@latest"
+  ],
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true
+    }
+  },
+  "provider": {
+    "openrouter": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "https://openrouter.ai/api/v1"
+      },
+      "models": {
+        "deepseek/deepseek-v4-pro": {
+          "id": "deepseek/deepseek-v4-pro",
+          "name": "Deepseek V4 Pro",
+          "attachment": true,
+          "tool_call": true
+        },
+        "deepseek/deepseek-v4-flash": {
+          "id": "deepseek/deepseek-v4-flash",
+          "name": "Deepseek V4 Flash",
+          "attachment": true,
+          "tool_call": true
+        },
+        "qwen/qwen3.6-plus": {
+          "id": "qwen/qwen3.6-plus",
+          "name": "Qwen3.6-plus",
+          "attachment": true,
+          "tool_call": true
+        },
+        "qwen/qwen3.6-35b-a3b": {
+          "id": "qwen/qwen3.6-35b-a3b",
+          "name": "Qwen3.6 35B A3B",
+          "attachment": true,
+          "tool_call": true
+        },
+        "qwen/qwen3.6-27b": {
+          "id": "qwen/qwen3.6-27b",
+          "name": "Qwen3.6 27B",
+          "attachment": true,
+          "tool_call": true
+        },
+        "google/gemma-4-26b-a4b-it": {
+          "id": "google/gemma-4-26b-a4b-it",
+          "name": "Gemma 4 26B",
+          "attachment": true,
+          "tool_call": true
+        }
+      }
+    }
+  },
+  "agent": {
+    "coder": {
+      "description": "Technical implementation specialist for writing and modifying code",
+      "mode": "subagent",
+      "model": "openrouter/deepseek/deepseek-v4-pro",
+      "prompt": "{file:./agent/coder.md}"
+    },
+    "researcher": {
+      "description": "Knowledge architect for external research and documentation",
+      "mode": "subagent",
+      "model": "openrouter/deepseek/deepseek-v4-pro",
+      "prompt": "{file:./agent/researcher.md}"
+    },
+    "reviewer": {
+      "description": "Expert code reviewer for security, performance, and philosophy compliance",
+      "mode": "subagent",
+      "model": "openrouter/qwen/qwen3.6-27b",
+      "prompt": "{file:./agent/reviewer.md}"
+    },
+    "scribe": {
+      "description": "Human-facing content specialist for documentation and prose",
+      "mode": "subagent",
+      "model": "openrouter/deepseek/deepseek-v4-flash",
+      "prompt": "{file:./agent/scribe.md}"
+    }
+  }
+}

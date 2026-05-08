@@ -1,2 +1,4 @@
 nvim_config/plugin
 nvim_config/lazy-lock.json
+
+opencode/local-providers.json

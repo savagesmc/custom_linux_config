@@ -1,0 +1,68 @@
+{
+  "version": 3,
+  "skills": {
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/skills.git",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "skillFolderHash": "3013fdeb8a11b10b1eb795ec3ae8bfca38f7c26d",
+      "installedAt": "2026-05-06T22:46:06.981Z",
+      "updatedAt": "2026-05-06T22:46:10.129Z"
+    },
+    "docker-expert": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/sickn33/antigravity-awesome-skills.git",
+      "skillPath": "skills/docker-expert/SKILL.md",
+      "skillFolderHash": "4de306f28c3b66e8bb0419b574930bbce43ae47d",
+      "installedAt": "2026-05-06T22:47:14.470Z",
+      "updatedAt": "2026-05-06T22:47:14.470Z"
+    },
+    "git-advanced-workflows": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/wshobson/agents.git",
+      "skillPath": "plugins/developer-essentials/skills/git-advanced-workflows/SKILL.md",
+      "skillFolderHash": "1c8f6587821f811d33397596db1f3d22ae4d8b88",
+      "installedAt": "2026-05-06T22:50:35.506Z",
+      "updatedAt": "2026-05-06T22:50:35.506Z"
+    },
+    "pytest-coverage": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/github/awesome-copilot.git",
+      "skillPath": "skills/pytest-coverage/SKILL.md",
+      "skillFolderHash": "abd9a3fb4ce4642bcc016982cbf0afba0c8f7222",
+      "installedAt": "2026-05-06T22:52:20.198Z",
+      "updatedAt": "2026-05-06T22:52:20.198Z"
+    },
+    "cpp-testing": {
+      "source": "affaan-m/everything-claude-code",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/affaan-m/everything-claude-code.git",
+      "skillPath": "skills/cpp-testing/SKILL.md",
+      "skillFolderHash": "79a134d3e2e701b58725335871b26b65c7a720eb",
+      "installedAt": "2026-05-06T22:53:38.527Z",
+      "updatedAt": "2026-05-06T22:53:38.527Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "antigravity",
+    "cline",
+    "codex",
+    "cursor",
+    "deepagents",
+    "dexto",
+    "firebender",
+    "gemini-cli",
+    "github-copilot",
+    "kimi-cli",
+    "opencode",
+    "warp"
+  ]
+}
