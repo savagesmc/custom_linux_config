@@ -32,18 +32,23 @@ elif [ -d ~/.config/opencode/agent ]; then
     echo "WARNING: ~/.config/opencode/agent exists and is not a symlink, leaving it alone"
 fi
 
-# Remove OPENCODE_CONFIG block from ~/.zshrc
-if grep -q "OPENCODE_CONFIG" ~/.zshrc 2>/dev/null; then
-    sed -i '' '/^# OpenCode local providers config$/,/^fi$/d' ~/.zshrc
-    echo "Removed OPENCODE_CONFIG from ~/.zshrc"
-fi
-
-# Remove EDITOR export added by custom_install.sh (Darwin only)
-if uname -s | grep -q Darwin; then
-    if grep -q "^export EDITOR=" ~/.zshrc 2>/dev/null; then
-        sed -i '' '/^export EDITOR=/d' ~/.zshrc
-        echo "Removed EDITOR export from ~/.zshrc"
-    fi
+# Remove OPENCODE_CONFIG block from ~/.env
+if [ -f ~/.env ] && grep -q "OPENCODE_CONFIG" ~/.env 2>/dev/null; then
+    tmpfile=$(mktemp)
+    skip=0
+    while IFS= read -r line; do
+        if echo "$line" | grep -q "^# OpenCode local providers config$"; then
+            skip=1
+            continue
+        fi
+        if [ $skip -eq 1 ] && echo "$line" | grep -q "^fi$"; then
+            skip=0
+            continue
+        fi
+        [ $skip -eq 0 ] && echo "$line"
+    done < ~/.env > "$tmpfile"
+    mv "$tmpfile" ~/.env
+    echo "Removed OPENCODE_CONFIG from ~/.env"
 fi
 
 # Remove powerlevel9k if installed by custom_install.sh

@@ -83,6 +83,10 @@ stl() {
 alias cdb="cd /src/.cache/artifact_stage/sw/x86-64/boards/common/bin"
 alias cdh="cd /src/providers/hw"
 
+alias dotupdate='(cd ~/repos/linux_config && git pull) && (cd ~/repos/custom_linux_config && git pull)'
+alias dotreinstall='~/repos/linux_config/install.sh ~/repos/custom_linux_config'
+alias dotup='(cd ~/repos/linux_config && git pull) && (cd ~/repos/custom_linux_config && git pull) && ~/repos/linux_config/install.sh ~/repos/custom_linux_config'
+
 export LD_LIBRARY_PATH=../lib:$LD_LIBRARY_PATH
 
 # OpenCode local providers
