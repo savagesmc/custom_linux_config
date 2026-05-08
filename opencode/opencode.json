@@ -8,6 +8,14 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp",
       "enabled": true
+    },
+    "plantuml": {
+      "type": "local",
+      "command": ["npx", "-y", "@brainstack/plantuml-mcp"],
+      "enabled": true,
+      "environment": {
+        "PLANTUML_SERVER_URL": "http://localhost:8080" 
+      }
     }
   },
   "provider": {
