@@ -32,12 +32,6 @@ elif [ -d ~/.config/opencode/agent ]; then
     echo "WARNING: ~/.config/opencode/agent exists and is not a symlink, leaving it alone"
 fi
 
-# Remove local-providers.json (machine-specific, not tracked in git)
-if [ -f ~/.config/opencode/local-providers.json ]; then
-    rm -f ~/.config/opencode/local-providers.json
-    echo "Removed ~/.config/opencode/local-providers.json"
-fi
-
 # Remove OPENCODE_CONFIG block from ~/.zshrc
 if grep -q "OPENCODE_CONFIG" ~/.zshrc 2>/dev/null; then
     sed -i '' '/^# OpenCode local providers config$/,/^fi$/d' ~/.zshrc
