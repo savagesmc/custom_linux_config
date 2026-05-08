@@ -75,6 +75,12 @@
       "model": "openrouter/qwen/qwen3.6-27b",
       "prompt": "{file:./agent/reviewer.md}"
     },
+    "tester": {
+      "description": "Test specialist for writing, fixing, and running tests across the stack",
+      "mode": "subagent",
+      "model": "openrouter/deepseek/deepseek-v4-pro",
+      "prompt": "{file:./agent/tester.md}"
+    },
     "scribe": {
       "description": "Human-facing content specialist for documentation and prose",
       "mode": "subagent",

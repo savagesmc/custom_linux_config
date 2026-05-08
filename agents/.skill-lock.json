@@ -45,6 +45,52 @@
       "skillFolderHash": "79a134d3e2e701b58725335871b26b65c7a720eb",
       "installedAt": "2026-05-06T22:53:38.527Z",
       "updatedAt": "2026-05-06T22:53:38.527Z"
+    },
+    "test-driven-development": {
+      "source": "obra/superpowers",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/obra/superpowers.git",
+      "skillPath": "skills/test-driven-development/SKILL.md",
+      "skillFolderHash": "98904a7d8e0e04b9bd46220b9b17298f45fe0b72",
+      "installedAt": "2026-05-08T19:32:11.334Z",
+      "updatedAt": "2026-05-08T19:32:11.334Z"
+    },
+    "webapp-testing": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/skills.git",
+      "skillPath": "skills/webapp-testing/SKILL.md",
+      "skillFolderHash": "5ffb7dc66b9fd4c25c3e400a4c00da99a349b714",
+      "pluginName": "example-skills",
+      "installedAt": "2026-05-08T19:32:12.425Z",
+      "updatedAt": "2026-05-08T19:32:12.425Z"
+    },
+    "python-testing-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/wshobson/agents.git",
+      "skillPath": "plugins/python-development/skills/python-testing-patterns/SKILL.md",
+      "skillFolderHash": "28ce19935b2b48708af69e47e7686936a249c08b",
+      "installedAt": "2026-05-08T19:32:12.573Z",
+      "updatedAt": "2026-05-08T19:32:12.573Z"
+    },
+    "javascript-testing-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/wshobson/agents.git",
+      "skillPath": "plugins/javascript-typescript/skills/javascript-testing-patterns/SKILL.md",
+      "skillFolderHash": "4cf407af21684bcf061cb3d63b43553ec14b2126",
+      "installedAt": "2026-05-08T19:32:13.265Z",
+      "updatedAt": "2026-05-08T19:32:13.265Z"
+    },
+    "playwright-generate-test": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/github/awesome-copilot.git",
+      "skillPath": "skills/playwright-generate-test/SKILL.md",
+      "skillFolderHash": "80b315fa5ec450946b5eb78c19fbd989dff33b11",
+      "installedAt": "2026-05-08T19:33:18.343Z",
+      "updatedAt": "2026-05-08T19:33:18.343Z"
     }
   },
   "dismissed": {
