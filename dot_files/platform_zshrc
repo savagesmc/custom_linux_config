@@ -34,7 +34,7 @@ case $PLATFORM in
       ;;
 esac
 
-if [[ ${PLATFORM} -eq "WSL" || ${PLATFORM} -eq "WSL2" || ${PLATFORM} -eq  "CYGWIN"  \
+if [[ ${PLATFORM} = "WSL" || ${PLATFORM} = "WSL2" || ${PLATFORM} = "CYGWIN"  \
       && -e ~/.ssh_port_forwarding ]]; then
   . ~/.ssh_port_forwarding
 else

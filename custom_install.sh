@@ -11,12 +11,17 @@ fi
 
 mkdir -p ~/.config
 
+if [ -d ~/.config/nvim ] && [ ! -L ~/.config/nvim ]; then
+    echo "WARNING: ~/.config/nvim is a regular directory (Neovim auto-created it). Removing and replacing with symlink."
+    rm -rf ~/.config/nvim
+fi
 ln -sf ${DIR}/nvim_config ~/.config/nvim
 
 case "$(uname -s)" in
 
    Darwin)
-     echo 'export EDITOR=/usr/local/bin/nvim' >> ~/.zshrc
+      EDITOR_PATH=$(command -v nvim 2>/dev/null || echo /usr/local/bin/nvim)
+      echo "export EDITOR=${EDITOR_PATH}" >> ~/.zshrc
      ;;
 
 esac

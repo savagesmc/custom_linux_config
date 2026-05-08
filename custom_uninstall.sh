@@ -9,6 +9,14 @@ elif [ -d ~/.agents ]; then
     echo "WARNING: ~/.agents exists and is not a symlink, leaving it alone"
 fi
 
+# Remove nvim config symlink
+if [ -L ~/.config/nvim ]; then
+    rm -f ~/.config/nvim
+    echo "Removed ~/.config/nvim symlink"
+elif [ -d ~/.config/nvim ]; then
+    echo "WARNING: ~/.config/nvim exists and is not a symlink, leaving it alone"
+fi
+
 # Remove opencode symlinks and files
 if [ -L ~/.config/opencode/opencode.json ]; then
     rm -f ~/.config/opencode/opencode.json
@@ -38,14 +46,14 @@ fi
 
 # Remove EDITOR export added by custom_install.sh (Darwin only)
 if uname -s | grep -q Darwin; then
-    if grep -q "export EDITOR=/usr/local/bin/nvim" ~/.zshrc 2>/dev/null; then
-        sed -i '' '/export EDITOR=\/usr\/local\/bin\/nvim/d' ~/.zshrc
+    if grep -q "^export EDITOR=" ~/.zshrc 2>/dev/null; then
+        sed -i '' '/^export EDITOR=/d' ~/.zshrc
         echo "Removed EDITOR export from ~/.zshrc"
     fi
 fi
 
-# Remove powerpower9k if installed by custom_install.sh
-if [ -d ~/.oh-my-zsh/custom/themes/powerpower9k ]; then
-    rm -rf ~/.oh-my-zsh/custom/themes/powerpower9k
-    echo "Removed powerpower9k theme"
+# Remove powerlevel9k if installed by custom_install.sh
+if [ -d ~/.oh-my-zsh/custom/themes/powerlevel9k ]; then
+    rm -rf ~/.oh-my-zsh/custom/themes/powerlevel9k
+    echo "Removed powerlevel9k theme"
 fi
