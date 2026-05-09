@@ -25,10 +25,7 @@
     "github": {
       "type": "local",
       "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
-      "enabled": true,
-      "environment": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "your_token_here"
-      }
+      "enabled": true
     },
     "gitlab": {
       "type": "local",
