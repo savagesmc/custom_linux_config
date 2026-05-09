@@ -98,15 +98,33 @@ require("lazy").setup({
     "williamboman/mason-lspconfig.nvim", -- simple to use language server installer
   },
 
-  -- Markdown Preview
-  ({
-    "iamcco/markdown-preview.nvim",
-    run = "cd app && npm install",
-    setup = function()
-      vim.g.mkdp_filetypes = { "markdown" }
+  -- Markdown Preview & Inline Rendering
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown", "gitcommit", "codecompanion" },
+    opts = function()
+      local browser_cmd = "xdg-open"
+      local ok, uname = pcall(function()
+        return vim.uv.os_uname().sysname
+      end)
+      if ok and uname and uname:lower():find("darwin") then
+        browser_cmd = "open"
+      end
+
+      return {
+        heading = { sign = true },
+        latex = { enabled = false },
+        math = { enabled = false },
+        code = { width = 0, sign = true },
+        link = { url_color = "#429282", enabled = true },
+        -- render_port = 7777,
+        -- browser = {
+        --   cmd = browser_cmd,
+        --   url = "http://127.0.0.1:%d",
+        -- },
+      }
     end,
-    ft = { "markdown" },
-  }),
+  },
 
   -- Telescope
   {
@@ -145,4 +163,3 @@ require("lazy").setup({
   },
 
 })
-
