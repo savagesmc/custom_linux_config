@@ -16,6 +16,27 @@
       "environment": {
         "PLANTUML_SERVER_URL": "http://localhost:8080" 
       }
+    },
+    "drawio": {
+      "type": "local",
+      "command": ["npx", "-y", "@drawio/mcp"],
+      "enabled": true
+    },
+    "github": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "enabled": true,
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "your_token_here"
+      }
+    },
+    "gitlab": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-server-gitlab"],
+      "environment": {
+        "GITLAB_TOKEN": "your_token_here",
+        "GITLAB_API_URL": "https://gitlab.com/api/v4"
+      }
     }
   },
   "provider": {

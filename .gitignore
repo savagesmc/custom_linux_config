@@ -2,3 +2,7 @@ nvim_config/plugin
 nvim_config/lazy-lock.json
 
 opencode/local-providers.json
+
+cache/
+airgap_bundle/
+airgap_dev_env.tar.gz

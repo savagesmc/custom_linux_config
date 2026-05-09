@@ -1,0 +1,88 @@
+FROM ubuntu:24.04
+ENV DEBIAN_FRONTEND=noninteractive
+ARG NVIM_VERSION=v0.11.7
+
+# Install system deps (excluding neovim — we install v0.11.7 from tarball)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git curl wget unzip python3 python3-pip nodejs npm zsh tmux \
+    build-essential clangd \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /root
+
+# Install Neovim 0.11.7 from release tarball into ~/.local/
+RUN case "$(uname -m)" in \
+      aarch64) NVIM_ARCH="arm64" ;; \
+      *)       NVIM_ARCH="x86_64" ;; \
+    esac && \
+    curl -fsSL -o /tmp/nvim.tar.gz \
+      "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-${NVIM_ARCH}.tar.gz" && \
+    mkdir -p /root/.local && \
+    tar xzf /tmp/nvim.tar.gz -C /root/.local --strip-components=1 && \
+    rm /tmp/nvim.tar.gz
+
+# Also download the x86_64 tarball for the air-gapped target bundle
+RUN mkdir -p /bundle && \
+    curl -fsSL -o /bundle/nvim-0.11.7-linux-x86_64.tar.gz \
+    "https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux-x86_64.tar.gz"
+
+ENV PATH="/root/.local/bin:${PATH}"
+
+COPY nvim_config /tmp/nvim_config
+
+# ---- Clone external deps ----
+RUN git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git /bundle/oh-my-zsh
+RUN git clone --depth=1 https://github.com/bhilburn/powerlevel9k.git /bundle/powerlevel9k
+RUN git clone --depth=1 https://github.com/tmux-plugins/tpm /bundle/tpm
+RUN mkdir -p /bundle/tmux-plugins && \
+    for repo in tmux-sensible tmux-yank tmux-logging tmux-pain-control tmux-resurrect tmux-continuum vim-tmux-navigator; do \
+      case "$repo" in \
+        vim-tmux-navigator) url="https://github.com/christoomey/vim-tmux-navigator.git" ;; \
+        *) url="https://github.com/tmux-plugins/${repo}.git" ;; \
+      esac; \
+      git clone --depth=1 "$url" "/bundle/tmux-plugins/${repo}"; \
+    done
+
+# ---- Setup nvim config ----
+RUN mkdir -p /root/.config && cp -r /tmp/nvim_config /root/.config/nvim
+
+# ---- Phase 1: Bootstrap lazy.nvim + install all plugins ----
+RUN nvim --headless -c "lua if pcall(require, 'lazy') then require('lazy').sync({wait=true}) end" -c "qa" || true
+
+# ---- Phase 2: Install Mason LSP servers ----
+RUN nvim --headless \
+    -c "lua local r=require('mason-registry'); r.refresh(); local p={'lua-language-server','pyright','json-lsp','clangd','cmake-language-server','bash-language-server'}; for _,n in ipairs(p) do if not r.is_installed(n) then pcall(function() r.get_package(n):install() end) end end" \
+    -c "lua local r=require('mason-registry'); local p={'lua-language-server','pyright','json-lsp','clangd','cmake-language-server','bash-language-server'}; local ok=vim.wait(300000,function() for _,n in ipairs(p) do if not r.is_installed(n) then return false end end return true end); if not ok then vim.print('Mason: timeout') end" \
+    -c "qa" || true
+
+# ---- Phase 3: Install Treesitter parsers ----
+RUN nvim --headless -c "TSInstallSync all" -c "qa" || true
+
+# ---- Export nvim artifacts into /bundle ----
+RUN mkdir -p /bundle/nvim-lazy && \
+    if [ -d /root/.local/share/nvim/lazy ]; then \
+      cp -r /root/.local/share/nvim/lazy/* /bundle/nvim-lazy/; \
+    fi
+
+RUN if [ -f /root/.config/nvim/lazy-lock.json ]; then \
+      cp /root/.config/nvim/lazy-lock.json /bundle/nvim-lazy-lock.json; \
+    fi
+
+RUN mkdir -p /bundle/nvim-mason && \
+    if [ -d /root/.local/share/nvim/mason/packages ]; then \
+      cp -r /root/.local/share/nvim/mason/packages /bundle/nvim-mason/packages; \
+    fi && \
+    if [ -d /root/.local/share/nvim/mason/bin ]; then \
+      cp -r /root/.local/share/nvim/mason/bin /bundle/nvim-mason/bin; \
+    fi && \
+    if [ -d /root/.local/share/nvim/mason/.registry ]; then \
+      cp -r /root/.local/share/nvim/mason/.registry /bundle/nvim-mason/.registry; \
+    fi
+
+RUN mkdir -p /bundle/nvim-treesitter && \
+    find /root/.local/share/nvim -name "*.so" 2>/dev/null | while read f; do \
+      cp "$f" /bundle/nvim-treesitter/ 2>/dev/null; \
+    done; \
+    echo "Parsers exported: $(ls /bundle/nvim-treesitter/ 2>/dev/null | wc -l)"
+
+CMD cp -r /bundle/* /output/
