@@ -8,16 +8,20 @@ Usage:
   # SSH to a remote GPU box and scan for Ollama, LM Studio, and vLLM (via hf cache)
   python populate_local_providers.py --host gpu-box
 
+  # SSH to a remote host with a custom provider key (no auto-suffix)
+  python populate_local_providers.py --host gpu-box --provider-key my-ollama
+
+  # Scan localhost with a custom provider key
+  python populate_local_providers.py --provider-key lmstudio-laptop
+
   # Custom ports
   python populate_local_providers.py --host gpu-box --port-ollama 11435 --port-vllm 8080
 """
 
 import argparse
 import json
-import os
 import pathlib
 import subprocess
-import sys
 import urllib.error
 import urllib.request
 
@@ -31,6 +35,8 @@ def parse_args():
     p.add_argument("--port-vllm", type=int, default=8000)
     p.add_argument("--modalities", action="store_true",
                    help="Query Hugging Face API for each model's input/output modalities")
+    p.add_argument("--provider-key",
+                   help="Custom provider key (e.g. 'my-ollama'). Overrides auto-generated key from --host")
     p.add_argument("--dry-run", action="store_true",
                    help="Print what would be written without modifying the file")
     return p.parse_args()
@@ -293,6 +299,134 @@ def _build_models(models, modalities_map=None):
     return result
 
 
+def make_provider_key(base, host, custom_key):
+    """Resolve the provider key: custom_key > host-suffixed > base fallback."""
+    if custom_key:
+        return custom_key
+    if host:
+        return f"{base}-{host}"
+    return base
+
+
+def make_provider_name(base_display, host, custom_key):
+    """Generate a descriptive display name for the provider."""
+    if custom_key:
+        return f"{base_display} ({custom_key})"
+    if host:
+        return f"{base_display} ({host})"
+    return f"{base_display} (auto)"
+
+
+def opencode_config_path():
+    return pathlib.Path.home() / ".config" / "opencode" / "opencode.json"
+
+
+def load_agents():
+    p = opencode_config_path()
+    if not p.exists():
+        return {}
+    with open(p) as f:
+        return json.load(f).get("agent", {})
+
+
+def gather_provider_models(providers):
+    models = []
+    for pid, pdata in providers.items():
+        for mid, mdata in pdata.get("models", {}).items():
+            name = mdata.get("name", mid)
+            models.append((pid, mid, name))
+    return models
+
+
+def pick_agent_model(agent_name, current_model, models):
+    print(f"\n  Agent: {agent_name}")
+    print(f"  Current model: {current_model}")
+    print(f"  Available local models:")
+    for i, (pid, mid, name) in enumerate(models, 1):
+        print(f"    {i}. [{pid}] {name}")
+    print(f"    {len(models) + 1}. Skip (keep current)")
+
+    while True:
+        choice = input(f"  Pick a model [1-{len(models) + 1}]: ").strip()
+        if not choice:
+            return None
+        try:
+            idx = int(choice)
+            if 1 <= idx <= len(models):
+                return f"{models[idx - 1][0]}/{models[idx - 1][1]}"
+            elif idx == len(models) + 1:
+                return None
+        except ValueError:
+            pass
+        print(f"  Enter a number between 1 and {len(models) + 1}")
+
+
+def configure_agent_overrides(config, dry_run=False):
+    agents = load_agents()
+    if not agents:
+        print("\nNo agents found in opencode.json")
+        return
+
+    providers = config.get("provider", {})
+    models = gather_provider_models(providers)
+    if not models:
+        print("\nNo models found in discovered providers")
+        return
+
+    print(f"\n{'=' * 60}")
+    print("Agent model override: use local models instead of defaults?")
+    print(f"{'=' * 60}")
+
+    overrides = {}
+    all_agents = sorted(agents.keys())
+
+    override_all = input(f"\nOverride ALL agents? [y/N/a] (a=ask one by one): ").strip().lower()
+
+    if override_all == "y":
+        print(f"\nSelect one model for ALL {len(all_agents)} agents:")
+        picked = pick_agent_model("ALL agents", "(multiple models)", models)
+        if picked:
+            for aname in all_agents:
+                overrides[aname] = picked
+            print(f"  -> All agents will use: {picked}")
+
+    elif override_all == "a":
+        for aname in all_agents:
+            adata = agents[aname]
+            current = adata.get("model", "unknown")
+            answer = input(f"\n  Override '{aname}'? (currently: {current}) [y/N]: ").strip().lower()
+            if answer in ("y", "yes"):
+                picked = pick_agent_model(aname, current, models)
+                if picked:
+                    overrides[aname] = picked
+                    print(f"  -> {aname}: {picked}")
+                else:
+                    print(f"  -> Keeping: {current}")
+
+    else:
+        print("  Skipping agent model overrides.")
+        return
+
+    if not overrides:
+        print("\n  No overrides selected.")
+        return
+
+    print(f"\n  Overrides to write to local-providers.json:")
+    for aname, model in overrides.items():
+        print(f"    {aname}: {model}")
+
+    confirm = input("\n  Write agent overrides? [y/N]: ").strip().lower()
+    if confirm not in ("y", "yes"):
+        print("  Skipped.")
+        return
+
+    config.setdefault("agent", {})
+    for k, v in overrides.items():
+        config["agent"].setdefault(k, {})
+        config["agent"][k]["model"] = v
+    return True
+
+
 def main():
     args = parse_args()
 
@@ -313,7 +447,9 @@ def main():
             if args.modalities:
                 print("    querying HF Hub for modalities...")
                 models, modalities_map = add_modalities(models)
-            upsert_provider(providers, "ollama", "Ollama (auto)",
+            key = make_provider_key("ollama", args.host, args.provider_key)
+            name = make_provider_name("Ollama", args.host, args.provider_key)
+            upsert_provider(providers, key, name,
                             f"http://{ip}:{args.port_ollama}/v1", models, modalities_map)
             print(f"    {len(models)} model(s)")
         else:
@@ -326,7 +462,9 @@ def main():
             if args.modalities:
                 print("    querying HF Hub for modalities...")
                 models, modalities_map = add_modalities(models)
-            upsert_provider(providers, "lmstudio", "LM Studio (auto)",
+            key = make_provider_key("lmstudio", args.host, args.provider_key)
+            name = make_provider_name("LM Studio", args.host, args.provider_key)
+            upsert_provider(providers, key, name,
                             f"http://{ip}:{args.port_lmstudio}/v1", models, modalities_map)
             print(f"    {len(models)} model(s)")
         else:
@@ -339,7 +477,9 @@ def main():
             if args.modalities:
                 print("    querying HF Hub for modalities...")
                 models, modalities_map = add_modalities(models)
-            upsert_provider(providers, "vllm", "vLLM (auto)",
+            key = make_provider_key("vllm", args.host, args.provider_key)
+            name = make_provider_name("vLLM", args.host, args.provider_key)
+            upsert_provider(providers, key, name,
                             f"http://{ip}:{args.port_vllm}/v1", models, modalities_map)
             print(f"    {len(models)} model(s)")
         else:
@@ -354,7 +494,9 @@ def main():
             if args.modalities:
                 print("    querying HF Hub for modalities...")
                 models, modalities_map = add_modalities(models)
-            upsert_provider(providers, "ollama", "Ollama (auto)",
+            key = make_provider_key("ollama", args.host, args.provider_key)
+            name = make_provider_name("Ollama", args.host, args.provider_key)
+            upsert_provider(providers, key, name,
                             f"http://127.0.0.1:{args.port_ollama}/v1", models, modalities_map)
             print(f"    {len(models)} model(s)")
         else:
@@ -367,12 +509,15 @@ def main():
             if args.modalities:
                 print("    querying HF Hub for modalities...")
                 models, modalities_map = add_modalities(models)
-            upsert_provider(providers, "lmstudio", "LM Studio (auto)",
+            key = make_provider_key("lmstudio", args.host, args.provider_key)
+            name = make_provider_name("LM Studio", args.host, args.provider_key)
+            upsert_provider(providers, key, name,
                             f"http://127.0.0.1:{args.port_lmstudio}/v1", models, modalities_map)
             print(f"    {len(models)} model(s)")
         else:
             print("    not found")
 
+    configure_agent_overrides(config, dry_run=args.dry_run)
     save_config(config, dry_run=args.dry_run)
 
 
