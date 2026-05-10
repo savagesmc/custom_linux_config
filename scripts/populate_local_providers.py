@@ -20,9 +20,11 @@ Usage:
 
 import argparse
 import json
+import os
 import pathlib
 import subprocess
 import urllib.error
+import urllib.parse
 import urllib.request
 
 
@@ -68,10 +70,34 @@ def save_config(config, dry_run=False):
         print(f"\nWritten to {p}")
 
 
+def _proxy_for_url(url):
+    """Return proxy to use for URL, or None to use direct connection."""
+    proxy = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy") or \
+            os.environ.get("HTTP_PROXY") or os.environ.get("http_proxy")
+    if not proxy:
+        return None
+    host = urllib.parse.urlparse(url).hostname
+    if not host:
+        return proxy
+    if host in ("localhost", "127.0.0.1", "::1") or host.endswith(".local"):
+        return None
+    if urllib.request.proxy_bypass(host):
+        return None
+    return proxy
+
+
+def _build_proxy_opener(url=None):
+    proxy = _proxy_for_url(url)
+    if proxy:
+        return urllib.request.build_opener(urllib.request.ProxyHandler({"https": proxy, "http": proxy}))
+    return urllib.request.build_opener()
+
+
 def http_json(url, timeout=5):
     req = urllib.request.Request(url)
     req.add_header("Accept", "application/json")
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
+    opener = _build_proxy_opener(url)
+    with opener.open(req, timeout=timeout) as resp:
         return json.loads(resp.read().decode())
 
 
